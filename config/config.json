@@ -6,6 +6,7 @@
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
+
   "test": {
     "username": "postgres",
     "password": "yourpassword",
@@ -14,10 +15,10 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "postgres",
-    "password": "yourpassword",
-    "database": "yourdatabase_prod",
-    "host": "127.0.0.1",
+    "username": "postgres.dgxzbrmtcpsunrtmwjwe",
+    "password": "aA@9918434680",
+    "database": "institute",
+    "host": "aws-0-ap-south-1.pooler.supabase.com",
     "dialect": "postgres"
   }
 }

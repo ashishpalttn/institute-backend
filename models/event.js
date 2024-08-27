@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     endDate: DataTypes.DATE,
     eventLogo: DataTypes.STRING,
     eventHead: DataTypes.STRING,
-    contactNo: DataTypes.STRING,
+    phoneNumber: DataTypes.STRING,
     contactEmail: DataTypes.STRING
   }, {
     sequelize,
