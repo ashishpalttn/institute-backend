@@ -1,0 +1,60 @@
+version: 1.0.0
+type: service
+
+# The name of the component (service)
+name: institut-backend
+
+# The programming language of the service
+language: nodejs
+
+# Specify the source directory
+sourceDirectory: src
+
+# Exposed ports
+expose:
+  - port: 5001
+    protocol: http
+
+# Optional: Environment variables
+env:
+  - name: DATABASE_URL
+    value: "jdbc:postgresql://aws-0-ap-south-1.pooler.supabase.com:6543/postgres?user=postgres.dgxzbrmtcpsunrtmwjwe&password=aA@9918434680"
+
+# Optional: Dependency files (e.g., for Node.js, package.json)
+dependencies:
+  - file: package.json
+  - file: package-lock.json
+
+# Optional: Start command
+commands:
+  start: "node server.js"
+
+# Optional: Configurations for deployment, scaling, etc.
+deployment:
+  replicas: 2
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+
+# Optional: Health checks
+health:
+  http:
+    path: /health
+    port: 5001
+    interval: 10s
+    timeout: 2s
+    healthyThreshold: 3
+    unhealthyThreshold: 3
+
+# Optional: Build steps
+build:
+  steps:
+    - name: Install dependencies
+      command: "npm install"
+
+    - name: Build project
+      command: "npm run build"
