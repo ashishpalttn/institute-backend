@@ -1,0 +1,9 @@
+version: 0.1
+
+endpoints:
+  - name: Institute Backend API
+    port: 5001
+    type: REST
+    networkVisibility: Public
+    context: /api
+    schemaFilePath: openapi.yaml
