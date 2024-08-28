@@ -27,7 +27,7 @@ dependencies:
 
 # Optional: Start command
 commands:
-  start: "node server.js"
+  start: "node src/server.js"
 
 # Optional: Configurations for deployment, scaling, etc.
 deployment:
