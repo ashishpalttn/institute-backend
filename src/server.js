@@ -15,7 +15,7 @@ const sequelize = new Sequelize(process.env.DB_CONNECTION_STRING, {
 
 app.use(cors())
 app.use(cors({
-  origin: 'http://localhost:3001', // Allow only requests from this origin
+  origin: ['http://localhost:3001','http://localhost:3002'], // Allow only requests from this origin
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
 }));
 // Middleware

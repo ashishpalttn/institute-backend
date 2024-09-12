@@ -69,12 +69,3 @@ exports.deleteEvent = async (req, res) => {
   }
 };
 
-
-
-// const asyncHandler = require('../utils/asyncHandler');
-// const { createEvent } = require('../models/eventModel');
-
-// exports.createEvent = asyncHandler(async (req, res) => {
-//   const event = await createEvent(req.body);
-//   res.status(201).json(event);
-// });
