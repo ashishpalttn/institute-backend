@@ -1,10 +1,11 @@
 const express = require('express');
 const { Sequelize } = require('sequelize');
-const app = express();
-const eventRoutes = require('./routes/eventRoutes'); // Import your event routes
+const cors = require('cors');
+const eventRegisterRoutes = require('./routes/eventRoutes'); // Import your event routes
+const revenRegistrationRoutes = require('./routes/event.routes')
 require('dotenv').config();
-const cors = require('cors')
 
+const app = express();
 const PORT = process.env.PORT || 5001;
 
 // Initialize Sequelize connection
@@ -14,16 +15,24 @@ const sequelize = new Sequelize(process.env.DB_CONNECTION_STRING, {
 });
 
 app.use(cors())
-app.use(cors({
-  origin: ['http://localhost:3001','http://localhost:3002'], // Allow only requests from this origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
-}));
+// app.use(cors({
+//   origin: ['http://localhost:3001','http://localhost:3002'], // Allow only requests from this origin
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
+// }));
+
 // Middleware
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 
-app.use('/api', eventRoutes);
+app.use('/api', eventRegisterRoutes);
+app.use('/event-registration', revenRegistrationRoutes);
+app.use('*',(req, res, next)=>{
+  res.status(404).json({
+    status: 'failed',
+    message: 'route not found'
+  })
+})
 
 const startServer = async () => {
   try {
