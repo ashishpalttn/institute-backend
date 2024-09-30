@@ -21,6 +21,23 @@ exports.getEventRegistrations = async (req, res) => {
   }
 };
 
+exports.getParticepantList = async (req, res) => {
+  const { eventName } = req.params; 
+  try {
+    const participants = await EventRegistration.findAll({
+      where: { eventName }
+    });
+    if (participants.length > 0) {
+      res.status(200).json(participants); // Return the list of participants
+    } else {
+      res.status(404).json({ message: "No participants found for this event." });
+    }
+  } catch (error) {
+
+    res.status(500).json({ message: "Error fetching participants", error });
+  }
+};
+
 exports.deleteEventRegistration = async (req, res) => {
   const { id } = req.params; // Extract id from request parameters
 

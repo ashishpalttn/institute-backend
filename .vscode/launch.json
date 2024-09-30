@@ -1,0 +1,10 @@
+{
+    "type": "node",
+    "request": "launch",
+    "name": "Debug Express",
+    "program": "${workspaceFolder}/src/server.js",
+    "restart": true,
+    "console": "integratedTerminal",
+    "internalConsoleOptions": "neverOpen"
+  }
+  

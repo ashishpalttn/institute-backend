@@ -21,7 +21,20 @@ module.exports = (sequelize, DataTypes) => {
     eventLogo: DataTypes.STRING,
     eventHead: DataTypes.STRING,
     phoneNumber: DataTypes.STRING,
-    contactEmail: DataTypes.STRING
+    contactEmail: DataTypes.STRING,
+    instituteName: {
+      type: DataTypes.STRING,
+      allowNull: false // Add validation if needed
+    },
+    eventStatus: {
+      type: DataTypes.STRING,
+      defaultValue: true // Set a default value if required
+    },
+    fee: {
+      type: DataTypes.INTEGER,
+      allowNull: true 
+    }
+
   }, {
     sequelize,
     modelName: 'Event',

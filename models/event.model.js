@@ -25,6 +25,12 @@ module.exports = (sequelize, DataTypes) => {
     shortNote: {
       type: DataTypes.TEXT,
     },
+    eventName: {
+      type: DataTypes.STRING,
+    },
+    instituteName: {
+      type: DataTypes.STRING,
+    },
   }, {
     timestamps: true,
     tableName: 'event_registrations',
