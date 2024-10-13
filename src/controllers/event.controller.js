@@ -1,5 +1,6 @@
 // /src/controllers/event.controller.js
 const  {EventRegistration}  = require('../../models');
+const XLSX = require('xlsx');
 
 exports.createEventRegistration = async (req, res) => {
   try {
@@ -73,5 +74,70 @@ exports.updateEventRegistration = async (req, res) => {
     res.status(200).json(registration);
   } catch (error) {
     res.status(500).json({ error: 'Failed to update event registration' });
+  }
+};
+
+
+exports.updateRegistration = async (req, res) => {
+  try {
+    const registrationId = req.params.id;
+    const updatedData = req.body;  // Get the updated data from the request body
+
+    // Find the student registration by ID
+    const registration = await EventRegistration.findByPk(registrationId);
+
+    if (!registration) {
+      return res.status(404).json({ message: 'Student registration not found' });
+    }
+
+    // Update the registration with the new data
+    await registration.update(updatedData);
+
+    // Return the updated registration
+    return res.status(200).json(registration);
+  } catch (error) {
+    console.error('Error updating student registration:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+exports.exportStudentsByEvent = async (req, res) => {
+  try {
+      const { eventName } = req.params;
+      const registrations = await EventRegistration.findAll({ where: { eventName } });
+
+      if (registrations.length === 0) {
+          return res.status(404).json({ message: 'No students found for this event' });
+      }
+
+      const formattedData = registrations.map((reg) => ({
+          StudentName: reg.studentName,
+          Class: reg.studentClass,
+          MobileNo: reg.mobileNo,
+          Email: reg.email,
+          GuardianName: reg.guardianName,
+          ShortNote: reg.shortNote,
+          EventName: reg.eventName,
+          InstituteName: reg.instituteName,
+          RegisteredAt: reg.createdAt,
+      }));
+
+      // Create worksheet
+      const ws = XLSX.utils.json_to_sheet(formattedData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Students');
+
+      // Generate Excel file
+      const fileName = `Students_${eventName}.xlsx`;
+      const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+
+      // Set headers and send file
+      res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.send(buffer);
+  } catch (error) {
+      console.error('Error exporting students:', error);
+      res.status(500).json({ message: 'Server error' });
   }
 };

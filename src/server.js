@@ -3,6 +3,7 @@ const { Sequelize } = require('sequelize');
 const cors = require('cors');
 const eventRegisterRoutes = require('./routes/eventRoutes'); // Import your event routes
 const revenRegistrationRoutes = require('./routes/event.routes')
+const paymentRoutes = require('./routes/paymentRoutes')
 require('dotenv').config();
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 app.use('/api', eventRegisterRoutes);
 app.use('/event-registration', revenRegistrationRoutes);
+app.use('/api/payment', paymentRoutes);
 app.use('*',(req, res, next)=>{
   res.status(404).json({
     status: 'failed',
