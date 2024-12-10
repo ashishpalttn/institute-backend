@@ -5,8 +5,21 @@ const eventRegisterRoutes = require('./routes/eventRoutes'); // Import your even
 const revenRegistrationRoutes = require('./routes/event.routes')
 const paymentRoutes = require('./routes/paymentRoutes')
 require('dotenv').config();
+const authMiddleware = require('./middlewares/protectRoute');
+const cookieParser = require('cookie-parser');
 
 const app = express();
+app.use(cookieParser());
+// app.use(authMiddleware);
+
+app.use(cors({
+  origin: ['http://localhost:3001','http://localhost:3002'], // Allow only requests from this origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
+  credentials: true    
+}));
+
+
+
 const PORT = process.env.PORT || 5001;
 
 // Initialize Sequelize connection
@@ -15,16 +28,13 @@ const sequelize = new Sequelize(process.env.DB_CONNECTION_STRING, {
   logging: false,
 });
 
-app.use(cors())
-// app.use(cors({
-//   origin: ['http://localhost:3001','http://localhost:3002'], // Allow only requests from this origin
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
-// }));
+
 
 // Middleware
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
+app.use(authMiddleware);
 
 app.use('/api', eventRegisterRoutes);
 app.use('/event-registration', revenRegistrationRoutes);
