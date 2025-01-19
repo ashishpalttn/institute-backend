@@ -8,7 +8,7 @@ exports.createEventRegistration = async (req, res) => {
     res.status(201).json(newRegistration);
   } catch (error) {
     console.error('Error fetching registrations:', error); // Add this line
-    res.status(500).json({ error: 'Failed to create event registration' });
+    res.status(500).json({ error: 'Failed to create event registration' });//send
   }
 };
 

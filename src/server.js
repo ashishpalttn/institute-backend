@@ -4,16 +4,17 @@ const cors = require('cors');
 const eventRegisterRoutes = require('./routes/eventRoutes'); // Import your event routes
 const revenRegistrationRoutes = require('./routes/event.routes')
 const paymentRoutes = require('./routes/paymentRoutes')
+const studentRoutes = require('../src/routes/student.routes')
 require('dotenv').config();
 const authMiddleware = require('./middlewares/protectRoute');
 const cookieParser = require('cookie-parser');
 
 const app = express();
 app.use(cookieParser());
-// app.use(authMiddleware);
+
 
 app.use(cors({
-  origin: ['http://localhost:3001','http://localhost:3002'], // Allow only requests from this origin
+  origin: ['http://localhost:3000','http://localhost:3001','http://localhost:3002'], // Allow only requests from this origin
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
   credentials: true    
 }));
@@ -34,9 +35,10 @@ const sequelize = new Sequelize(process.env.DB_CONNECTION_STRING, {
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
-app.use(authMiddleware);
-
 app.use('/api', eventRegisterRoutes);
+app.use('/secure/student', studentRoutes)
+
+app.use(authMiddleware);
 app.use('/event-registration', revenRegistrationRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('*',(req, res, next)=>{
@@ -45,6 +47,8 @@ app.use('*',(req, res, next)=>{
     message: 'route not found'
   })
 })
+
+
 
 const startServer = async () => {
   try {
